@@ -1,13 +1,12 @@
-import { z } from "zod";
 import { prisma } from "../../../database";
 import { type ServerInstance } from "../../../lib/fastify";
 import {
+  commandResponseSchema,
   errorResponseSchema,
   getUserParamsSchema,
   getUserResponseSchema,
   updateUserParamsSchema,
   updateUserRequestSchema,
-  updateUserResponseSchema,
   deleteUserParamsSchema,
 } from "./schema";
 
@@ -67,7 +66,7 @@ export default async function (fastify: ServerInstance) {
         params: updateUserParamsSchema,
         body: updateUserRequestSchema,
         response: {
-          200: updateUserResponseSchema,
+          200: commandResponseSchema,
           400: errorResponseSchema,
           404: errorResponseSchema,
           409: errorResponseSchema,
@@ -101,7 +100,7 @@ export default async function (fastify: ServerInstance) {
         }
       }
 
-      const user = await prisma.user.update({
+      await prisma.user.update({
         where: { id: userId },
         data: {
           ...(email && { email }),
@@ -109,7 +108,7 @@ export default async function (fastify: ServerInstance) {
         },
       });
 
-      return reply.send(formatUserResponse(user));
+      return reply.send({ message: "ユーザーを更新しました" });
     }
   );
 
@@ -122,7 +121,7 @@ export default async function (fastify: ServerInstance) {
         description: "指定したIDのユーザーを削除します。",
         params: deleteUserParamsSchema,
         response: {
-          204: z.null(),
+          200: commandResponseSchema,
           404: errorResponseSchema,
         },
       },
@@ -142,7 +141,7 @@ export default async function (fastify: ServerInstance) {
         where: { id: userId },
       });
 
-      return reply.status(204).send();
+      return reply.send({ message: "ユーザーを削除しました" });
     }
   );
 }

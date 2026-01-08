@@ -5,8 +5,8 @@ import {
   calculatePagination,
 } from "../../lib/pagination";
 import {
+  commandResponseSchema,
   createUserRequestSchema,
-  createUserResponseSchema,
   errorResponseSchema,
   listUsersQuerySchema,
   listUsersResponseSchema,
@@ -87,7 +87,7 @@ export default async function (fastify: ServerInstance) {
         description: "新しいユーザーを作成します。",
         body: createUserRequestSchema,
         response: {
-          201: createUserResponseSchema,
+          201: commandResponseSchema,
           400: errorResponseSchema,
           409: errorResponseSchema,
         },
@@ -106,11 +106,11 @@ export default async function (fastify: ServerInstance) {
           .send({ message: "このメールアドレスは既に登録されています" });
       }
 
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: { email, name },
       });
 
-      return reply.status(201).send(formatUserResponse(user));
+      return reply.status(201).send({ message: "ユーザーを作成しました" });
     }
   );
 }

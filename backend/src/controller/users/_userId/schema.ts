@@ -37,11 +37,13 @@ export const updateUserRequestSchema = z.object({
 
 export type UpdateUserRequest = z.infer<typeof updateUserRequestSchema>;
 
-export const updateUserResponseSchema = userResponseSchema;
-
 // DELETE /api/users/:userId
 export const deleteUserParamsSchema = z.object({
   userId: z.string(),
 });
 
 export type DeleteUserParams = z.infer<typeof deleteUserParamsSchema>;
+
+export const commandResponseSchema = z.object({
+  message: z.string(),
+});

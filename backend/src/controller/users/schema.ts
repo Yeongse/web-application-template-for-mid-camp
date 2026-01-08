@@ -28,6 +28,10 @@ export type ListUsersQuery = z.infer<typeof listUsersQuerySchema>;
 export const listUsersResponseSchema =
   createPaginatedResponseSchema(userResponseSchema);
 
+export const commandResponseSchema = z.object({
+  message: z.string(),
+});
+
 // POST /api/users
 export const createUserRequestSchema = z.object({
   email: z.email(),
@@ -35,5 +39,3 @@ export const createUserRequestSchema = z.object({
 });
 
 export type CreateUserRequest = z.infer<typeof createUserRequestSchema>;
-
-export const createUserResponseSchema = userResponseSchema;
