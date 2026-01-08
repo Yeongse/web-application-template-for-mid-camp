@@ -41,7 +41,7 @@ export const updateUserResponseSchema = userResponseSchema;
 
 // DELETE /api/users/:userId
 export const deleteUserParamsSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.string(),
 });
 
 export type DeleteUserParams = z.infer<typeof deleteUserParamsSchema>;
