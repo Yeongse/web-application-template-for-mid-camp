@@ -43,6 +43,7 @@ async function buildApp() {
   await app.register(fastifyCors, {
     origin:
       process.env.NODE_ENV === "production" ? process.env.CORS_ORIGIN : true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   });
 
